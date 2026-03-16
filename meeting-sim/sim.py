@@ -177,9 +177,9 @@ def generate_mock_meetings(hours_ahead: int = 24, limit: int = 10) -> list[dict]
             "description": "Weekly sync: sprint progress, blockers, Clockchain growth metrics, Flash usage stats.",
             "hosts": [{"name": "Sean McDonald"}],
             "attendees": [
-                {"name": "Hermes Agent 1", "email": "agent-1@timepointai.com"},
-                {"name": "Aria Chen", "email": "aria@timepointai.com"},
-                {"name": "Marcus Webb", "email": "marcus@timepointai.com"},
+                {"name": "Hermes Agent 1", "email": "agent-1@example.com"},
+                {"name": "Aria Chen", "email": "aria@example.com"},
+                {"name": "Marcus Webb", "email": "marcus@example.com"},
             ],
         },
         {
@@ -190,9 +190,9 @@ def generate_mock_meetings(hours_ahead: int = 24, limit: int = 10) -> list[dict]
             "description": "Quarterly update for seed investors. Cover MRR growth, Clockchain node count, Flash API usage, and roadmap for Q3. Prepare for Series A timing discussion.",
             "hosts": [{"name": "Sean McDonald"}],
             "attendees": [
-                {"name": "Patricia Nguyen", "email": "patricia@northstarvc.com"},
-                {"name": "David Rothstein", "email": "david@empirecap.io"},
-                {"name": "Aria Chen", "email": "aria@timepointai.com"},
+                {"name": "Patricia Nguyen", "email": "patricia@example.com"},
+                {"name": "David Rothstein", "email": "david@example.com"},
+                {"name": "Aria Chen", "email": "aria@example.com"},
             ],
         },
         {
@@ -203,8 +203,8 @@ def generate_mock_meetings(hours_ahead: int = 24, limit: int = 10) -> list[dict]
             "description": "Review the multi-writer auth system, MCP endpoint performance, and plan for federation across instances. Discuss graph growth strategy and autonomous agent contributions.",
             "hosts": [{"name": "Sean McDonald"}],
             "attendees": [
-                {"name": "Kai Petrov", "email": "kai@timepointai.com"},
-                {"name": "Luna Vasquez", "email": "luna@timepointai.com"},
+                {"name": "Kai Petrov", "email": "kai@example.com"},
+                {"name": "Luna Vasquez", "email": "luna@example.com"},
             ],
         },
         {
@@ -215,8 +215,8 @@ def generate_mock_meetings(hours_ahead: int = 24, limit: int = 10) -> list[dict]
             "description": "Live demo of SkipMeetings for Acme Corp's VP of Engineering. Show meeting summarization, action item extraction, and calendar integration. They have 200+ engineers.",
             "hosts": [{"name": "Sean McDonald"}],
             "attendees": [
-                {"name": "Rachel Torres", "email": "rtorres@acmecorp.com"},
-                {"name": "James Chen", "email": "jchen@acmecorp.com"},
+                {"name": "Rachel Torres", "email": "rtorres@example.com"},
+                {"name": "James Chen", "email": "jchen@example.com"},
             ],
         },
         {
@@ -227,9 +227,9 @@ def generate_mock_meetings(hours_ahead: int = 24, limit: int = 10) -> list[dict]
             "description": "Kickoff with HistoryVault.io — they want to integrate Flash API for their educational timeline product. Discuss API access tiers, rate limits, and co-marketing.",
             "hosts": [{"name": "Sean McDonald"}],
             "attendees": [
-                {"name": "Elena Marchetti", "email": "elena@historyvault.io"},
-                {"name": "Tom Bradford", "email": "tom@historyvault.io"},
-                {"name": "Aria Chen", "email": "aria@timepointai.com"},
+                {"name": "Elena Marchetti", "email": "elena@example.com"},
+                {"name": "Tom Bradford", "email": "tom@example.com"},
+                {"name": "Aria Chen", "email": "aria@example.com"},
             ],
         },
     ]
