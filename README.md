@@ -1,2 +1,71 @@
-# hermes-agent-timepoint-skills
-Hermes Agent skills for the Timepoint ecosystem — Clockchain, Flash, and Meeting Simulator
+# Hermes Agent Timepoint Skills
+
+[Hermes Agent](https://github.com/NousResearch/hermes-agent) skills for the [Timepoint](https://timepointai.com) ecosystem.
+
+## Skills
+
+| Skill | Description |
+|-------|-------------|
+| [clockchain](./clockchain/) | Query, propose, and challenge moments on the Clockchain temporal graph via MCP |
+| [flash](./flash/) | Generate rich historical timepoints with text and images using Timepoint Flash |
+| [meeting-sim](./meeting-sim/) | Simulate upcoming meetings with immersive previews, dialog, and AI-generated images |
+
+## Install
+
+```bash
+hermes skills install github:timepointai/hermes-agent-timepoint-skills
+```
+
+Or install individual skills:
+
+```bash
+hermes skills install github:timepointai/hermes-agent-timepoint-skills/clockchain
+hermes skills install github:timepointai/hermes-agent-timepoint-skills/flash
+hermes skills install github:timepointai/hermes-agent-timepoint-skills/meeting-sim
+```
+
+## Requirements
+
+### Clockchain
+- MCP connection to a Clockchain instance (e.g. `clockchain.timepointai.com/mcp/`)
+- Writer token for authenticated proposals
+
+### Flash
+- Flash API access (`flash.timepointai.com`)
+- Service key (`FLASH_SERVICE_KEY`)
+
+### Meeting Simulator
+- Flash API access (for rendering)
+- Cal.com API key (`CALCOM_API_KEY`) for calendar integration
+- Or use `--query` mode for freeform meeting simulation without calendar
+
+## Usage
+
+Once installed, skills are available as slash commands in Hermes:
+
+```
+/clockchain    — "Query the Clockchain for events related to the Renaissance"
+/flash         — "Generate a timepoint for the moon landing"
+/meeting-sim   — "Simulate my next meeting"
+```
+
+The meeting simulator can also run as a standalone script:
+
+```bash
+python meeting-sim/sim.py --query "Board meeting, CEO and 3 investors, Series A" --preset balanced
+python meeting-sim/sim.py --next          # Next calendar meeting
+python meeting-sim/sim.py --hours 24      # All meetings today
+```
+
+## Stack
+
+```
+Hermes Agent
+  ├── MCP ──> Clockchain (propose/challenge/query moments)
+  ├── HTTP ──> Flash (generate timepoints + images)
+  └── HTTP ──> Cal.com (fetch upcoming meetings)
+```
+
+## License
+
+MIT
