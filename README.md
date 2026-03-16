@@ -36,7 +36,9 @@ hermes skills install github:timepointai/hermes-agent-timepoint-skills/meeting-s
 
 ### Meeting Simulator
 - Flash API access (for rendering)
-- Cal.com API key (`CALCOM_API_KEY`) for calendar integration
+- Cal.com API key (`CALCOM_API_KEY`) for calendar integration, **or**
+- Google Calendar OAuth2 token (`GOOGLE_TOKEN_PATH`) for Google integration, **or**
+- Use `--mock` for demo mode with realistic sample meetings (no API keys needed)
 - Or use `--query` mode for freeform meeting simulation without calendar
 
 ## Usage
@@ -52,9 +54,11 @@ Once installed, skills are available as slash commands in Hermes:
 The meeting simulator can also run as a standalone script:
 
 ```bash
-python meeting-sim/sim.py --query "Board meeting, CEO and 3 investors, Series A" --preset balanced
-python meeting-sim/sim.py --next          # Next calendar meeting
-python meeting-sim/sim.py --hours 24      # All meetings today
+python meeting-sim/sim.py --next --mock             # Demo with mock calendar
+python meeting-sim/sim.py --next --source google     # Google Calendar
+python meeting-sim/sim.py --next                      # Cal.com (default)
+python meeting-sim/sim.py --hours 24 --mock           # All mock meetings today
+python meeting-sim/sim.py --query "Board meeting, CEO and 3 investors, Series A"
 ```
 
 ## Stack

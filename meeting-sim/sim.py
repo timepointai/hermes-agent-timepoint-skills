@@ -1,7 +1,7 @@
 """Meeting Simulator — render upcoming meetings as immersive Flash timepoints.
 
-Fetches meetings from Cal.com, builds rich prompts, and calls Timepoint Flash
-to generate narrative previews with images.
+Fetches meetings from Cal.com or Google Calendar, builds rich prompts, and
+calls Timepoint Flash to generate narrative previews with images.
 
 Usage:
     python sim.py --next                    # Simulate next meeting
@@ -9,6 +9,8 @@ Usage:
     python sim.py --query "Team standup..." # Simulate from description
     python sim.py --next --preset hd        # High-quality images
     python sim.py --next --no-image         # Text only (faster)
+    python sim.py --next --source google    # Use Google Calendar
+    python sim.py --next --mock             # Use mock calendar data (demo)
 """
 
 from __future__ import annotations
@@ -27,6 +29,8 @@ from urllib.error import HTTPError
 
 CALCOM_API_URL = os.environ.get("CALCOM_API_URL", "https://api.cal.com")
 CALCOM_API_KEY = os.environ.get("CALCOM_API_KEY", "")
+GOOGLE_CREDENTIALS_PATH = os.environ.get("GOOGLE_CREDENTIALS_PATH", "")
+GOOGLE_TOKEN_PATH = os.environ.get("GOOGLE_TOKEN_PATH", "")
 FLASH_API_URL = os.environ.get("FLASH_API_URL", "https://flash.timepointai.com")
 FLASH_SERVICE_KEY = os.environ.get("FLASH_SERVICE_KEY", "")
 
@@ -72,6 +76,185 @@ def fetch_upcoming_meetings(hours_ahead: int = 24, limit: int = 10) -> list[dict
     }
     resp = _api("GET", url, headers)
     return resp.get("data", [])
+
+
+# ---------------------------------------------------------------------------
+# Google Calendar
+# ---------------------------------------------------------------------------
+
+def fetch_google_calendar_meetings(hours_ahead: int = 24, limit: int = 10) -> list[dict]:
+    """Fetch upcoming events from Google Calendar API.
+
+    Requires google-auth and google-api-python-client.
+    Uses OAuth2 credentials stored at GOOGLE_CREDENTIALS_PATH / GOOGLE_TOKEN_PATH.
+    Falls back to service account if GOOGLE_SERVICE_ACCOUNT_KEY is set.
+    """
+    try:
+        from google.oauth2.credentials import Credentials
+        from google.auth.transport.requests import Request as GRequest
+        from googleapiclient.discovery import build
+    except ImportError:
+        print("Google Calendar requires: pip install google-auth google-api-python-client",
+              file=sys.stderr)
+        return []
+
+    token_path = GOOGLE_TOKEN_PATH or os.path.expanduser("~/.hermes/google_token.json")
+    creds = None
+
+    if os.path.exists(token_path):
+        creds = Credentials.from_authorized_user_file(token_path)
+
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(GRequest())
+            with open(token_path, "w") as f:
+                f.write(creds.to_json())
+        else:
+            print("Google Calendar: no valid credentials. Run OAuth flow first.",
+                  file=sys.stderr)
+            print("  Set GOOGLE_TOKEN_PATH or place token at ~/.hermes/google_token.json",
+                  file=sys.stderr)
+            return []
+
+    service = build("calendar", "v3", credentials=creds)
+    now = datetime.now(timezone.utc)
+    end = now + timedelta(hours=hours_ahead)
+
+    events_result = service.events().list(
+        calendarId="primary",
+        timeMin=now.isoformat(),
+        timeMax=end.isoformat(),
+        maxResults=limit,
+        singleEvents=True,
+        orderBy="startTime",
+    ).execute()
+
+    events = events_result.get("items", [])
+    # Normalize Google Calendar events to the same shape as Cal.com bookings
+    normalized = []
+    for ev in events:
+        start_raw = ev.get("start", {}).get("dateTime", ev.get("start", {}).get("date", ""))
+        end_raw = ev.get("end", {}).get("dateTime", ev.get("end", {}).get("date", ""))
+        attendees = [
+            {"name": a.get("displayName", ""), "email": a.get("email", "")}
+            for a in ev.get("attendees", [])
+        ]
+        organizer = ev.get("organizer", {})
+        hosts = [{"name": organizer.get("displayName", organizer.get("email", "Organizer"))}]
+        location = ev.get("location", "")
+        if not location and ev.get("hangoutLink"):
+            location = "Google Meet"
+        elif not location:
+            location = "Virtual"
+
+        normalized.append({
+            "title": ev.get("summary", "Untitled"),
+            "start": start_raw,
+            "end": end_raw,
+            "description": ev.get("description", ""),
+            "location": location,
+            "hosts": hosts,
+            "attendees": attendees,
+            "guests": [],
+            "duration": "",
+        })
+    return normalized
+
+
+# ---------------------------------------------------------------------------
+# Mock Calendar (for demos and testing)
+# ---------------------------------------------------------------------------
+
+def generate_mock_meetings(hours_ahead: int = 24, limit: int = 10) -> list[dict]:
+    """Generate realistic mock calendar meetings for demo/testing."""
+    now = datetime.now(timezone.utc)
+    mock_meetings = [
+        {
+            "title": "Timepoint AI — Weekly Engineering Standup",
+            "delta_hours": 1,
+            "duration": 30,
+            "location": "Google Meet",
+            "description": "Weekly sync: sprint progress, blockers, Clockchain growth metrics, Flash usage stats.",
+            "hosts": [{"name": "Sean McDonald"}],
+            "attendees": [
+                {"name": "Hermes Agent 1", "email": "agent-1@timepointai.com"},
+                {"name": "Aria Chen", "email": "aria@timepointai.com"},
+                {"name": "Marcus Webb", "email": "marcus@timepointai.com"},
+            ],
+        },
+        {
+            "title": "Series A Strategy — Investor Update Call",
+            "delta_hours": 3,
+            "duration": 60,
+            "location": "Zoom",
+            "description": "Quarterly update for seed investors. Cover MRR growth, Clockchain node count, Flash API usage, and roadmap for Q3. Prepare for Series A timing discussion.",
+            "hosts": [{"name": "Sean McDonald"}],
+            "attendees": [
+                {"name": "Patricia Nguyen", "email": "patricia@northstarvc.com"},
+                {"name": "David Rothstein", "email": "david@empirecap.io"},
+                {"name": "Aria Chen", "email": "aria@timepointai.com"},
+            ],
+        },
+        {
+            "title": "Clockchain Architecture Review",
+            "delta_hours": 5,
+            "duration": 45,
+            "location": "Google Meet",
+            "description": "Review the multi-writer auth system, MCP endpoint performance, and plan for federation across instances. Discuss graph growth strategy and autonomous agent contributions.",
+            "hosts": [{"name": "Sean McDonald"}],
+            "attendees": [
+                {"name": "Kai Petrov", "email": "kai@timepointai.com"},
+                {"name": "Luna Vasquez", "email": "luna@timepointai.com"},
+            ],
+        },
+        {
+            "title": "SkipMeetings Product Demo — Enterprise Prospect",
+            "delta_hours": 8,
+            "duration": 30,
+            "location": "Google Meet",
+            "description": "Live demo of SkipMeetings for Acme Corp's VP of Engineering. Show meeting summarization, action item extraction, and calendar integration. They have 200+ engineers.",
+            "hosts": [{"name": "Sean McDonald"}],
+            "attendees": [
+                {"name": "Rachel Torres", "email": "rtorres@acmecorp.com"},
+                {"name": "James Chen", "email": "jchen@acmecorp.com"},
+            ],
+        },
+        {
+            "title": "Flash API — Partner Integration Kickoff",
+            "delta_hours": 24,
+            "duration": 45,
+            "location": "Zoom",
+            "description": "Kickoff with HistoryVault.io — they want to integrate Flash API for their educational timeline product. Discuss API access tiers, rate limits, and co-marketing.",
+            "hosts": [{"name": "Sean McDonald"}],
+            "attendees": [
+                {"name": "Elena Marchetti", "email": "elena@historyvault.io"},
+                {"name": "Tom Bradford", "email": "tom@historyvault.io"},
+                {"name": "Aria Chen", "email": "aria@timepointai.com"},
+            ],
+        },
+    ]
+
+    results = []
+    for m in mock_meetings:
+        start = now + timedelta(hours=m["delta_hours"])
+        end = start + timedelta(minutes=m["duration"])
+        if start > now + timedelta(hours=hours_ahead):
+            continue
+        results.append({
+            "title": m["title"],
+            "start": start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "end": end.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "description": m["description"],
+            "location": m["location"],
+            "hosts": m["hosts"],
+            "attendees": m["attendees"],
+            "guests": [],
+            "duration": m["duration"],
+        })
+        if len(results) >= limit:
+            break
+
+    return results
 
 
 def meeting_to_prompt(meeting: dict) -> str:
@@ -265,6 +448,10 @@ def main():
     group.add_argument("--hours", type=int, help="Simulate all meetings in the next N hours")
     group.add_argument("--query", type=str, help="Simulate a meeting from a text description")
 
+    parser.add_argument("--source", default="calcom", choices=["calcom", "google"],
+                        help="Calendar source (default: calcom)")
+    parser.add_argument("--mock", action="store_true",
+                        help="Use mock calendar data for demo/testing")
     parser.add_argument("--preset", default="balanced", choices=["balanced", "hd", "hyper", "gemini3"],
                         help="Flash quality preset (default: balanced)")
     parser.add_argument("--no-image", action="store_true", help="Skip image generation")
@@ -293,13 +480,25 @@ def main():
         # Fetch from calendar
         hours = 1 if args.next else args.hours
         limit = 1 if args.next else 10
-        meetings = fetch_upcoming_meetings(hours_ahead=hours or 24, limit=limit)
+
+        if args.mock:
+            print("Using mock calendar data (demo mode)")
+            meetings = generate_mock_meetings(hours_ahead=hours or 24, limit=limit)
+        elif args.source == "google":
+            print("Fetching from Google Calendar...")
+            meetings = fetch_google_calendar_meetings(hours_ahead=hours or 24, limit=limit)
+        else:
+            meetings = fetch_upcoming_meetings(hours_ahead=hours or 24, limit=limit)
 
         if not meetings:
-            if CALCOM_API_KEY:
+            if args.mock:
+                print("No mock meetings in the specified window.")
+            elif args.source == "google":
+                print("No upcoming Google Calendar events found. Check credentials or use --mock.")
+            elif CALCOM_API_KEY:
                 print("No upcoming meetings found in the specified window.")
             else:
-                print("No CALCOM_API_KEY set. Use --query to simulate without calendar access.")
+                print("No calendar configured. Use --mock for demo or --query for freeform.")
             return
 
         for i, meeting in enumerate(meetings):
