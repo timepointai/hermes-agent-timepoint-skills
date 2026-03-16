@@ -13,10 +13,17 @@ metadata:
 
 Flash is the generation engine for the Timepoint ecosystem. It creates rich historical "timepoints" — narrative scenes with characters, dialog, atmosphere, and images.
 
-## API Access
+## Setup
 
-Flash is available at the configured FLASH_API_URL (default: https://flash.timepointai.com).
-Authentication via X-Service-Key header.
+Flash is **open source** — you can clone and run your own instance:
+
+```bash
+git clone https://github.com/timepointai/timepoint-flash.git
+```
+
+Point `FLASH_API_URL` at your instance. No API key needed for self-hosted.
+
+Or use the hosted version at `flash.timepointai.com` with an `X-Service-Key` header for authentication.
 
 ## Key Endpoints
 

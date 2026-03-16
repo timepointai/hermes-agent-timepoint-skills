@@ -57,8 +57,8 @@ python /root/.hermes/skills/meeting-sim/sim.py --query "Q2 roadmap planning with
 
 | Variable | Required | Description |
 |---|---|---|
-| `FLASH_API_URL` | Yes | Flash API base URL |
-| `FLASH_SERVICE_KEY` | Yes | Flash service authentication key |
+| `FLASH_API_URL` | Yes | Flash API base URL (self-host: `git clone https://github.com/timepointai/timepoint-flash.git`) |
+| `FLASH_SERVICE_KEY` | For hosted | Flash service auth key (not needed if self-hosting) |
 | `CALCOM_API_KEY` | For Cal.com | Cal.com API key from Settings > Security |
 | `CALCOM_API_URL` | No | Cal.com API base (default: `https://api.cal.com`) |
 | `GOOGLE_TOKEN_PATH` | For Google | Path to OAuth2 token JSON (default: `~/.hermes/google_token.json`) |
