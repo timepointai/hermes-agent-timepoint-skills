@@ -1,0 +1,88 @@
+{
+  "meeting": {
+    "title": "Timepoint AI \u2014 Weekly Engineering Standup",
+    "start": "2026-03-16T06:37:45Z",
+    "end": "2026-03-16T07:07:45Z",
+    "attendees": [
+      "Hermes Agent 1",
+      "Aria Chen",
+      "Marcus Webb",
+      "Sean McDonald"
+    ],
+    "location": "Google Meet"
+  },
+  "simulation": {
+    "narrative": "The virtual meeting room materializes on screens across three time zones as Sean McDonald opens the weekly standup. The familiar grid of faces appears — Aria Chen already sharing her sprint board, Marcus Webb adjusting his glasses over a steaming coffee, and the clean geometric avatar of Hermes Agent 1 pulsing with real-time Clockchain metrics.",
+    "characters": [
+      {
+        "name": "Sean McDonald",
+        "role": "primary",
+        "description": "A man in his late thirties with short dark hair and a sparse beard, wearing practical modern spectacles. His analytical intensity is tempered by an approachable demeanor.",
+        "expression": "Focused and serious, with a subtle tension in his jawline — offering affirming nods as each team member speaks."
+      },
+      {
+        "name": "Aria Chen",
+        "role": "secondary",
+        "description": "A woman in her late twenties with keen, alert eyes behind stylish rectangular glasses. Dark hair pulled back in a practical ponytail.",
+        "expression": "Focused and attentive, brow slightly furrowed as she concentrates on her sprint report."
+      },
+      {
+        "name": "Marcus Webb",
+        "role": "secondary",
+        "description": "A man in his late thirties with a neat short beard and practical spectacles. Earnest, intelligent gaze.",
+        "expression": "Analytical, with slight tension around his eyes reflecting the urgency of the metrics review."
+      },
+      {
+        "name": "Hermes Agent 1",
+        "role": "secondary",
+        "description": "A sleek, minimalist digital avatar — an abstract geometric form projecting real-time data visualizations. Non-human, functional, always-on.",
+        "expression": "Perpetually neutral. Its 'expression' is conveyed through the clarity of its data display."
+      }
+    ],
+    "dialog": [
+      {
+        "speaker": "Sean McDonald",
+        "text": "Good morning, team. Let's make this efficient — sprint progress first, then Clockchain growth."
+      },
+      {
+        "speaker": "Sean McDonald",
+        "text": "Hermes, project the sprint metrics for this review."
+      },
+      {
+        "speaker": "Aria Chen",
+        "text": "I'm ready to share my screen — there's a velocity metric I'd like us to examine closely."
+      },
+      {
+        "speaker": "Sean McDonald",
+        "text": "Go ahead. Focus on the impact on our sprint deliverables and overall timeline."
+      },
+      {
+        "speaker": "Marcus Webb",
+        "text": "Clockchain hit 247 nodes overnight. The agent's been productive — three new causal clusters around the Industrial Revolution."
+      },
+      {
+        "speaker": "Sean McDonald",
+        "text": "Good growth. What's the edge density looking like?"
+      },
+      {
+        "speaker": "Aria Chen",
+        "text": "Flash API usage is up 40% week-over-week. The meeting-sim skill is driving most of the new traffic."
+      }
+    ],
+    "scene": {
+      "setting": "A composite digital space within a Google Meet interface — individual video tiles framing each participant's workspace, creating a unified virtual meeting room.",
+      "atmosphere": "Professional and focused, with an undercurrent of early-morning urgency. The subtle pressure of reviewing sprint progress and growth metrics.",
+      "lighting": "Cool blue-white glow from screens, supplemented by soft natural morning light filtering through windows.",
+      "sensory_details": [
+        {"sense": "sight", "description": "Occasional slight pixelation of video feeds — a common artifact of early morning network strain."},
+        {"sense": "sound", "description": "Soft rhythmic clicks of keyboards punctuated by crisp chat notification tones."},
+        {"sense": "smell", "description": "The faint imagined aroma of freshly brewed coffee — a shared ritual across the virtual space."}
+      ]
+    },
+    "image_url": "https://flash.timepointai.com/api/v1/timepoints/e6a4b3fc-1df2-4012-87c6-8b21aaca343b/image",
+    "has_image": true,
+    "preset_used": "balanced",
+    "generation_time_ms": 127518,
+    "tags": ["meeting", "simulation", "engineering", "standup"]
+  }
+}
