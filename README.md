@@ -61,13 +61,22 @@ python meeting-sim/sim.py --hours 24 --mock           # All mock meetings today
 python meeting-sim/sim.py --query "Board meeting, CEO and 3 investors, Series A"
 ```
 
+## Self-Hosting
+
+You can run your own instances of the Timepoint services these skills connect to:
+
+- **[Timepoint Flash](https://github.com/timepointai/timepoint-flash)** — the generation engine (timepoints, images, narratives)
+- **[Timepoint Clockchain](https://github.com/timepointai/timepoint-clockchain)** — the temporal causal graph
+
+Clone and deploy them yourself, or use the hosted versions at `flash.timepointai.com` and `clockchain.timepointai.com`.
+
 ## Stack
 
 ```
 Hermes Agent
   ├── MCP ──> Clockchain (propose/challenge/query moments)
   ├── HTTP ──> Flash (generate timepoints + images)
-  └── HTTP ──> Cal.com (fetch upcoming meetings)
+  └── HTTP ──> Cal.com / Google Calendar (fetch upcoming meetings)
 ```
 
 ## License
