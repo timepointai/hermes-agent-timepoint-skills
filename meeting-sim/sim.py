@@ -305,8 +305,15 @@ def meeting_to_prompt(meeting: dict) -> str:
         f"\nRender this as a future moment — show the room/space, the people arriving, "
         f"the opening exchanges, the key discussion points, moments of tension or "
         f"agreement, and how the meeting concludes. Include likely dialog based on "
-        f"the meeting topic. Make it feel real and specific, like a scene from a film. "
-        f"The image should capture the pivotal moment of the meeting."
+        f"the meeting topic. Make it feel real and specific, like a scene from a film.\n\n"
+        f"IMAGE DIRECTION: Photorealistic. This is a real meeting with real people in a "
+        f"real office or on a real video call. No fantasy, no sci-fi, no AI illustration "
+        f"style. Think editorial photography — natural lighting, candid framing, shallow "
+        f"depth of field. Show actual laptops, actual coffee cups, actual conference rooms "
+        f"or home offices. If it's a video call, show a realistic laptop screen with a "
+        f"video grid. People should look like normal professionals — no glowing eyes, no "
+        f"holograms, no futuristic UI. Ground everything in the mundane reality of how "
+        f"meetings actually look and feel."
     )
     return prompt
 
@@ -469,7 +476,12 @@ def main():
             f"Render this as a future moment — show the room/space, the people arriving, "
             f"the opening exchanges, the key discussion points, moments of tension or "
             f"agreement, and how the meeting concludes. Include likely dialog. "
-            f"Make it feel real and specific. The image should capture the pivotal moment."
+            f"Make it feel real and specific.\n\n"
+            f"IMAGE DIRECTION: Photorealistic. This is a real meeting with real people. "
+            f"No fantasy, no sci-fi, no AI illustration style. Think editorial photography "
+            f"— natural lighting, candid framing, shallow depth of field. Real laptops, "
+            f"real coffee cups, real conference rooms or home offices. People should look "
+            f"like normal professionals. Ground everything in mundane reality."
         )
         sim = simulate_meeting(prompt, args.preset, generate_image)
         if not sim.get("error"):
