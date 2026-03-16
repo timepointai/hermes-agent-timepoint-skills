@@ -85,20 +85,33 @@ hermes skills install github:timepointai/hermes-agent-timepoint-skills/meeting-s
 
 ## Requirements
 
-### Clockchain
-- MCP connection to a Clockchain instance (e.g. `clockchain.timepointai.com/mcp/`)
-- Writer token for authenticated proposals
+### Flash (required for meeting-sim and flash skills)
 
-### Flash
-- Flash API access (`flash.timepointai.com`)
-- Service key (`FLASH_SERVICE_KEY`)
+Flash is **open source**. You don't need an API key — clone it and run your own:
 
-### Meeting Simulator
-- Flash API access (for rendering)
-- Cal.com API key (`CALCOM_API_KEY`) for calendar integration, **or**
-- Google Calendar OAuth2 token (`GOOGLE_TOKEN_PATH`) for Google integration, **or**
-- Use `--mock` for demo mode with realistic sample meetings (no API keys needed)
-- Or use `--query` mode for freeform meeting simulation without calendar
+```bash
+git clone https://github.com/timepointai/timepoint-flash.git
+cd timepoint-flash
+# see its README for setup — runs on Railway, Docker, or bare metal
+```
+
+Then point `FLASH_API_URL` at your instance. Or use the hosted version at `flash.timepointai.com` with a service key (`FLASH_SERVICE_KEY`).
+
+### Clockchain (required for clockchain skill)
+
+Also **open source**. Clone and run your own instance:
+
+```bash
+git clone https://github.com/timepointai/timepoint-clockchain.git
+```
+
+Or connect to any Clockchain instance via MCP (e.g. `clockchain.timepointai.com/mcp/`). Writer token required for proposals.
+
+### Meeting Simulator (calendar sources)
+- Cal.com API key (`CALCOM_API_KEY`), **or**
+- Google Calendar OAuth2 token (`GOOGLE_TOKEN_PATH`), **or**
+- `--mock` for demo mode with realistic sample meetings (no API keys needed), **or**
+- `--query` for freeform meeting simulation without any calendar
 
 ## Usage
 
@@ -119,15 +132,6 @@ python meeting-sim/sim.py --next                      # Cal.com (default)
 python meeting-sim/sim.py --hours 24 --mock           # All mock meetings today
 python meeting-sim/sim.py --query "Board meeting, CEO and 3 investors, Series A"
 ```
-
-## Self-Hosting
-
-You can run your own instances of the Timepoint services these skills connect to:
-
-- **[Timepoint Flash](https://github.com/timepointai/timepoint-flash)** — the generation engine (timepoints, images, narratives)
-- **[Timepoint Clockchain](https://github.com/timepointai/timepoint-clockchain)** — the temporal causal graph
-
-Clone and deploy them yourself, or use the hosted versions at `flash.timepointai.com` and `clockchain.timepointai.com`.
 
 ## Stack
 
