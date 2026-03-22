@@ -148,9 +148,10 @@ These skills are part of a larger stack for building temporal AI applications:
 
 | Project | What it does |
 |---------|-------------|
-| [Timepoint Flash](https://github.com/timepointai/timepoint-flash) | Generation engine — rich timepoints with narratives, characters, dialog, and images |
-| [Timepoint Clockchain](https://github.com/timepointai/timepoint-clockchain) | Temporal causal graph — propose, challenge, and verify historical moments via MCP |
-| [Timepoint Pro](https://github.com/timepointai/timepoint-pro) | Cloud platform — advanced generation, analysis, and research tools |
+| [Timepoint Flash](https://github.com/timepointai/timepoint-flash) | Pure generation engine — rich timepoints with narratives, characters, dialog, and images |
+| [Timepoint Clockchain](https://github.com/timepointai/timepoint-clockchain) | Temporal causal graph — 1,900+ nodes, 5M+ edges, MCP endpoint at clockchain.timepointai.com/mcp/ |
+| [Timepoint Pro](https://github.com/timepointai/timepoint-pro) | SNAG Simulation Engine — temporal simulation, causal provenance, TDF output |
+| [API Gateway](https://timepointai.com) | Auth authority at api.timepointai.com — JWT, OAuth (Apple/Google/GitHub), credits |
 
 ---
 
